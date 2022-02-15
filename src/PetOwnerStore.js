@@ -1,15 +1,44 @@
-class PetOwnerStore {
+import {
+    action,
+    computed,
+    makeObservable,
+    observable,
+    autorun,
+    runInAction,
+  } from "mobx";
+
+export class PetOwnerStore {
     pets= [];
     owners= [];
 
+    constructor () {
+        makeObservable(this, {
+          pets: observable,
+          owners: observable,
+          totalOwners: computed,
+          totalPets: computed,
+          storeDetails: computed,
+          getPetsByOwner: action,
+          createPet: action,
+          createOwner: action,
+          updatePet: action,
+          updateOwner: action,
+          deletePet: action,
+          deleteOwner: action,
+          assignOwnerToPet: action
+        });
+        autorun(this.logStoreDetails);
+      }
     // create a pet
     createPet(pet = { id: 0, name: "", type: "", breed: "", owner: null }) {
         this.pets.push(pet);
+        return pet;
     }
 
     // create an owner
     createOwner(owner = { id: 0, firstName: "", lastName: "" }) {
         this.owners.push(owner);
+        return owner;
     }
 
     // update the owner
